@@ -108,19 +108,21 @@ def read_datalist():
         return f.read().replace('\r', '').split('\n')
 
 
-def batch_decode():
+def batch_decode(output):
     datalist = read_datalist()
     print(f'decoding {len(datalist)} data...')
     abi = read_abi(config['ABI_OR_DEPLOYMENTS_JSON_PATH'])
-    for data in datalist:
-        decode_one(abi, data)
+    results = [decode_one(abi, data) for data in datalist]
+    with open(output, 'w', encoding='utf-8') as fw:
+        json.dump(results, fw, indent=2)
 
 
 def decode_one(abi, data):
     output = decode_tx(config['CONTRACT_ADDRESS'], data, abi)
     print('\n==> function called: ', output[0])
     print('- arguments: ', json.dumps(json.loads(output[1]), indent=2))
+    return {'function': output[0], 'args': output[1]}
 
 
 if __name__ == '__main__':
-    batch_decode()
+    batch_decode(config['OUT_PUT_PATH'])
