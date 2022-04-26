@@ -121,7 +121,7 @@ def decode_one(abi, data):
     output = decode_tx(config['CONTRACT_ADDRESS'], data, abi)
     print('\n==> function called: ', output[0])
     print('- arguments: ', json.dumps(json.loads(output[1]), indent=2))
-    return {'function': output[0], 'args': output[1]}
+    return {'function': output[0], 'args': json.loads(output[1])}
 
 
 if __name__ == '__main__':
