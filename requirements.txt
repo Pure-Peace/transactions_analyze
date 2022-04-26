@@ -1,0 +1,3 @@
+eth_utils==1.10.0
+python-dotenv==0.20.0
+web3==5.29.0
